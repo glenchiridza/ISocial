@@ -8,4 +8,6 @@
     <string name="logout">Logout</string>
     <string name="new_post">New Post</string>
     <string name="profile">Profile</string>
+    <string name="drawer_open">drawer_open</string>
+    <string name="drawer_close">drawer_close</string>
 </resources>
