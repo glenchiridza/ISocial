@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "435830469006",
+    "project_id": "isocial-8ad94",
+    "storage_bucket": "isocial-8ad94.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:435830469006:android:a8af0dd177b8d7ef8b34df",
+        "android_client_info": {
+          "package_name": "com.glencconnnect.isocial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "435830469006-hkk2i56tb992lb5i8s3jna3k0tsp090p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_d27LYCWIl-HZL47SDQdG5cLotRl7Wgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "435830469006-hkk2i56tb992lb5i8s3jna3k0tsp090p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
