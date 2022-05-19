@@ -83,6 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
             mAuth.createUserWithEmailAndPassword(email,password)
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
+                            SendUserToSetupActivity();
                             loadingBar.dismiss();
                             Toast.makeText(RegisterActivity.this, "auth success", Toast.LENGTH_SHORT).show();
                         }else{
@@ -93,6 +94,13 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    private void SendUserToSetupActivity() {
+        Intent intent = new Intent(this,SetupActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
     private void takeUserToLogin() {
