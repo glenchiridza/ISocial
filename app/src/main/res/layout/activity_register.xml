@@ -62,6 +62,31 @@
         app:layout_constraintStart_toStartOf="@+id/log_edt_password"
         app:layout_constraintTop_toBottomOf="@+id/log_edt_password" />
 
+
+    <TextView
+        android:id="@+id/qn_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/no_account"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/reg_edt_confirm_password"
+        app:layout_constraintStart_toStartOf="@+id/reg_edt_confirm_password"
+        app:layout_constraintTop_toBottomOf="@+id/reg_edt_confirm_password" />
+
+    <TextView
+        android:id="@+id/go_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/login"
+        android:textAlignment="center"
+        android:textColor="@color/design_default_color_primary_dark"
+        app:layout_constraintEnd_toEndOf="@+id/qn_text"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/qn_text"
+        app:layout_constraintTop_toBottomOf="@+id/qn_text" />
+
     <Button
         android:id="@+id/btn_login"
         android:layout_width="0dp"
@@ -69,9 +94,9 @@
         android:layout_marginTop="24dp"
         android:text="@string/register"
         android:background="@drawable/button"
-        app:layout_constraintEnd_toEndOf="@+id/reg_edt_confirm_password"
-        app:layout_constraintStart_toStartOf="@+id/reg_edt_confirm_password"
-        app:layout_constraintTop_toBottomOf="@+id/reg_edt_confirm_password" />
+        app:layout_constraintEnd_toEndOf="@+id/go_login"
+        app:layout_constraintStart_toStartOf="@+id/go_login"
+        app:layout_constraintTop_toBottomOf="@+id/go_login" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
