@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/reg_edt_email"
+        android:id="@+id/log_edt_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -35,7 +35,7 @@
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <EditText
-        android:id="@+id/reg_edt_password"
+        android:id="@+id/log_edt_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -44,9 +44,9 @@
         android:inputType="textPassword"
         android:background="@drawable/inputs"
         android:drawableStart="@drawable/ic_lock"
-        app:layout_constraintEnd_toEndOf="@+id/reg_edt_email"
-        app:layout_constraintStart_toStartOf="@+id/reg_edt_email"
-        app:layout_constraintTop_toBottomOf="@+id/reg_edt_email" />
+        app:layout_constraintEnd_toEndOf="@+id/log_edt_email"
+        app:layout_constraintStart_toStartOf="@+id/log_edt_email"
+        app:layout_constraintTop_toBottomOf="@+id/log_edt_email" />
 
     <EditText
         android:id="@+id/reg_edt_confirm_password"
@@ -58,12 +58,12 @@
         android:inputType="textPassword"
         android:background="@drawable/inputs"
         android:drawableStart="@drawable/ic_lock"
-        app:layout_constraintEnd_toEndOf="@+id/reg_edt_password"
-        app:layout_constraintStart_toStartOf="@+id/reg_edt_password"
-        app:layout_constraintTop_toBottomOf="@+id/reg_edt_password" />
+        app:layout_constraintEnd_toEndOf="@+id/log_edt_password"
+        app:layout_constraintStart_toStartOf="@+id/log_edt_password"
+        app:layout_constraintTop_toBottomOf="@+id/log_edt_password" />
 
     <Button
-        android:id="@+id/btn_register"
+        android:id="@+id/btn_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
