@@ -32,9 +32,9 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
-        edtEmail = findViewById(R.id.reg_edt_email);
-        edtPassword = findViewById(R.id.reg_edt_password);
-        btnLogin = findViewById(R.id.btn_register);
+        edtEmail = findViewById(R.id.log_edt_email);
+        edtPassword = findViewById(R.id.log_edt_password);
+        btnLogin = findViewById(R.id.btn_login);
 
         loadingBar = new ProgressDialog(this);
 
@@ -70,7 +70,9 @@ public class LoginActivity extends AppCompatActivity {
         }else{
             loadingBar.setTitle("Sign In");
             loadingBar.setMessage("Please wait...");
+            loadingBar.show();
             loadingBar.setCanceledOnTouchOutside(true);
+
 
             mAuth.signInWithEmailAndPassword(email,password)
                     .addOnCompleteListener(task -> {
