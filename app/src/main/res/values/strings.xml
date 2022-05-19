@@ -15,4 +15,8 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="register">Register</string>
     <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="or">Or</string>
+    <string name="singin_with_google">SingIn with Google</string>
 </resources>
