@@ -29,6 +29,16 @@ public class RegisterActivity extends AppCompatActivity {
             takeUserToLogin();
         });
 
+        btnRegister.setOnClickListener(view->{
+            createAccount();
+        });
+    }
+
+    private void createAccount() {
+        String email = edtEmail.getText().toString();
+        String password = edtPassword.getText().toString();
+        String confirmPassword = edtConfirmPassword.getText().toString();
+
     }
 
     private void takeUserToLogin() {
