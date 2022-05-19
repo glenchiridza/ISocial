@@ -29,12 +29,9 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigation_view);
         View navView = navigationView.inflateHeaderView(R.layout.navigation_header);
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                UserMenuSelector(item);
-                return false;
-            }
+        navigationView.setNavigationItemSelectedListener(item -> {
+            UserMenuSelector(item);
+            return false;
         });
     }
 
