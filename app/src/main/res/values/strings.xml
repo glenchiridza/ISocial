@@ -19,4 +19,8 @@
     <string name="no_account">Don\'t have an account?</string>
     <string name="or">Or</string>
     <string name="singin_with_google">SingIn with Google</string>
+    <string name="save">Save</string>
+    <string name="country">Country</string>
+    <string name="fullname">Fullname</string>
+    <string name="username">Username</string>
 </resources>

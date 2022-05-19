@@ -6,4 +6,74 @@
     android:layout_height="match_parent"
     tools:context=".SetupActivity">
 
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/setup_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/avatar"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/st_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/inputs"
+        android:drawableStart="@drawable/ic_person"
+        android:ems="10"
+        android:hint="@string/username"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setup_image" />
+
+    <EditText
+        android:id="@+id/st_fullname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/inputs"
+        android:ems="10"
+        android:hint="@string/fullname"
+        android:drawableStart="@drawable/ic_person"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/st_username"
+        app:layout_constraintStart_toStartOf="@+id/st_username"
+        app:layout_constraintTop_toBottomOf="@+id/st_username" />
+
+    <EditText
+        android:id="@+id/st_country"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/inputs"
+        android:ems="10"
+        android:hint="@string/country"
+        android:drawableStart="@drawable/ic_location"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/st_fullname"
+        app:layout_constraintStart_toStartOf="@+id/st_fullname"
+        app:layout_constraintTop_toBottomOf="@+id/st_fullname" />
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/button"
+        android:text="@string/save"
+        app:layout_constraintEnd_toEndOf="@+id/st_country"
+        app:layout_constraintStart_toStartOf="@+id/st_country"
+        app:layout_constraintTop_toBottomOf="@+id/st_country" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
