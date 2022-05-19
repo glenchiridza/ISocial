@@ -113,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "settings clicked", Toast.LENGTH_SHORT).show();
             }
             else if (idx == R.id.nav_logout) {
-                Toast.makeText(this, "logout clicked", Toast.LENGTH_SHORT).show();
+                mAuth.signOut();
+                sendUserToLoginActivity();
             }
 
     }
