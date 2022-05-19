@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -39,6 +41,26 @@ public class RegisterActivity extends AppCompatActivity {
         String password = edtPassword.getText().toString();
         String confirmPassword = edtConfirmPassword.getText().toString();
 
+        if(TextUtils.isEmpty(email)){
+
+            edtPassword.requestFocus();
+            edtPassword.setError("Email required");
+        }
+        else if(TextUtils.isEmpty(password)){
+            edtPassword.requestFocus();
+            edtPassword.setError("Password required");
+        }
+        else if(TextUtils.isEmpty(confirmPassword)){
+
+            edtPassword.requestFocus();
+            edtPassword.setError("Confirm Password required");
+        }
+        else if(!password.equals(confirmPassword)){
+            Toast.makeText(this, "password do not match", Toast.LENGTH_SHORT).show();
+        }
+        else{
+
+        }
     }
 
     private void takeUserToLogin() {
