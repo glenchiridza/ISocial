@@ -173,6 +173,25 @@ public class SetupActivity extends AppCompatActivity {
                                                 throw task.getException();
                                             }
                                             return filePath.getDownloadUrl();
+                                        })
+                                        .addOnCompleteListener(task -> {
+                                            if(task.isSuccessful()){
+                                                Uri downloadUri = task.getResult();
+
+                                                userRef.child("profileimage").setValue(downloadUri)
+                                                        .addOnCompleteListener(tasc->{
+                                                            if(tasc.isSuccessful()){
+
+                                                                Toast.makeText(SetupActivity.this, "profile image stored to firebase db", Toast.LENGTH_SHORT).show();
+
+                                                            }else{
+                                                                String message = tasc.getException().getMessage();
+                                                                Toast.makeText(SetupActivity.this, "Failure: "+message, Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
+
+                                                Toast.makeText(SetupActivity.this, "profile image saved", Toast.LENGTH_SHORT).show();
+                                            }
                                         });
                             }
 
