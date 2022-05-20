@@ -17,11 +17,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageActivity;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 
@@ -41,6 +48,8 @@ public class SetupActivity extends AppCompatActivity {
 
     private ProgressDialog loadingBar;
 
+    private StorageReference userProfileImageRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +59,7 @@ public class SetupActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUID = mAuth.getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUID);
+        userProfileImageRef = FirebaseStorage.getInstance().getReference().child("ProfileImages");
 
 
         loadingBar = new ProgressDialog(this);
@@ -68,6 +78,7 @@ public class SetupActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
+
             activityResultLauncher.launch(intent);
 
 
@@ -134,11 +145,41 @@ public class SetupActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if(result.getResultCode() == Activity.RESULT_OK){
-                        Intent imageURI = result.getData();
+                    if(result.getResultCode() == RESULT_OK){
+                        Intent data = result.getData();
 
+
+
+                        if(data != null && data.getData() !=null) {
+
+                            Uri imageUri = data.getData();
+
+                            CropImage.activity()
+                                    .setGuidelines(CropImageView.Guidelines.ON)
+                                    .setAspectRatio(1, 1)
+                                    .start(SetupActivity.this);
+
+
+                                CropImage.ActivityResult cropResult = CropImage.getActivityResult(data);
+
+
+                            if(result.getResultCode() == RESULT_OK && cropResult != null){
+
+                                Uri resultUri = cropResult.getUri();
+                                StorageReference filePath = userProfileImageRef.child(currentUID+".jpg");
+                                filePath.putFile(resultUri)
+                                        .continueWithTask(task -> {
+                                            if(!task.isSuccessful()){
+                                                throw task.getException();
+                                            }
+                                            return filePath.getDownloadUrl();
+                                        });
+                            }
+
+                        }
 
                     }
+
                 }
             });
 }
