@@ -187,6 +187,9 @@ public class SetupActivity extends AppCompatActivity {
                                                 userRef.child("profileimage").setValue(downloadUri)
                                                         .addOnCompleteListener(tasc->{
                                                             if(tasc.isSuccessful()){
+                                                                Intent selfIntent = new Intent(SetupActivity.this, SetupActivity.class);
+                                                                startActivity(selfIntent);
+
                                                                 loadingBar.dismiss();
                                                                 Toast.makeText(SetupActivity.this, "profile image stored to firebase db", Toast.LENGTH_SHORT).show();
 
@@ -203,6 +206,7 @@ public class SetupActivity extends AppCompatActivity {
                             }
 
                         }else{
+                            loadingBar.dismiss();
 
                             Toast.makeText(SetupActivity.this, "Error: Image not compatible", Toast.LENGTH_SHORT).show();
                         }
