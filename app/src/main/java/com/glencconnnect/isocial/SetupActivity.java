@@ -3,6 +3,8 @@ package com.glencconnnect.isocial;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -29,6 +31,8 @@ public class SetupActivity extends AppCompatActivity {
     private DatabaseReference userRef;
     private String currentUID;
 
+    private ProgressDialog loadingBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,8 @@ public class SetupActivity extends AppCompatActivity {
         currentUID = mAuth.getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUID);
 
+
+        loadingBar = new ProgressDialog(this);
 
         edtUsername = findViewById(R.id.st_username);
         edtFullName = findViewById(R.id.st_fullname);
@@ -70,6 +76,11 @@ public class SetupActivity extends AppCompatActivity {
             edtCountry.requestFocus();
         }
         else{
+            loadingBar.setTitle("Profile Setup");
+            loadingBar.setMessage("Please wait...");
+            loadingBar.show();
+            loadingBar.setCanceledOnTouchOutside(true);
+
             HashMap<String,Object> usermap = new HashMap<>();
             usermap.put("username",username);
             usermap.put("fullname",fullname);
@@ -81,13 +92,23 @@ public class SetupActivity extends AppCompatActivity {
 
             userRef.updateChildren(usermap).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
+                    loadingBar.dismiss();
+                    sendUserToMainActivity();
                     Toast.makeText(SetupActivity.this, "profile updated", Toast.LENGTH_LONG).show();
                 }else{
+                    loadingBar.dismiss();
                     String message = task.getException().getMessage();
                     Toast.makeText(SetupActivity.this, "Error: "+message, Toast.LENGTH_SHORT).show();
                 }
             });
 
         }
+    }
+
+    private void sendUserToMainActivity() {
+        Intent intent = new Intent(this,MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 }
