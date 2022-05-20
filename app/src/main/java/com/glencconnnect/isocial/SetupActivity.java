@@ -165,6 +165,12 @@ public class SetupActivity extends AppCompatActivity {
 
                             if(result.getResultCode() == RESULT_OK && cropResult != null){
 
+
+                                loadingBar.setTitle("Profile Image");
+                                loadingBar.setMessage("Please wait...");
+                                loadingBar.show();
+                                loadingBar.setCanceledOnTouchOutside(true);
+
                                 Uri resultUri = cropResult.getUri();
                                 StorageReference filePath = userProfileImageRef.child(currentUID+".jpg");
                                 filePath.putFile(resultUri)
@@ -181,10 +187,11 @@ public class SetupActivity extends AppCompatActivity {
                                                 userRef.child("profileimage").setValue(downloadUri)
                                                         .addOnCompleteListener(tasc->{
                                                             if(tasc.isSuccessful()){
-
+                                                                loadingBar.dismiss();
                                                                 Toast.makeText(SetupActivity.this, "profile image stored to firebase db", Toast.LENGTH_SHORT).show();
 
                                                             }else{
+                                                                loadingBar.dismiss();
                                                                 String message = tasc.getException().getMessage();
                                                                 Toast.makeText(SetupActivity.this, "Failure: "+message, Toast.LENGTH_SHORT).show();
                                                             }
@@ -195,6 +202,9 @@ public class SetupActivity extends AppCompatActivity {
                                         });
                             }
 
+                        }else{
+
+                            Toast.makeText(SetupActivity.this, "Error: Image not compatible", Toast.LENGTH_SHORT).show();
                         }
 
                     }
