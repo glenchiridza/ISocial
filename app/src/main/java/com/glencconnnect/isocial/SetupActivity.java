@@ -1,10 +1,16 @@
 package com.glencconnnect.isocial;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -22,6 +28,8 @@ import java.util.HashMap;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SetupActivity extends AppCompatActivity {
+
+    public static final int GALLERY_PICK= 1;
 
     private EditText edtUsername, edtFullName, edtCountry;
     private Button btnSave;
@@ -54,6 +62,15 @@ public class SetupActivity extends AppCompatActivity {
 
         btnSave.setOnClickListener(view->{
             AccountSetup();
+        });
+
+        profileImage.setOnClickListener(view -> {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            activityResultLauncher.launch(intent);
+
+
         });
 
     }
@@ -111,4 +128,17 @@ public class SetupActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    ActivityResultLauncher<Intent> activityResultLauncher =  registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if(result.getResultCode() == Activity.RESULT_OK){
+                        Intent imageURI = result.getData();
+
+
+                    }
+                }
+            });
 }
