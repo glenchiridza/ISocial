@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigation_view);
         View navView = navigationView.inflateHeaderView(R.layout.navigation_header);
 
-        navProfileImage = findViewById(R.id.nav_profile_image);
-        navProfileText = findViewById(R.id.nav_user_name);
+        navProfileImage = navView.findViewById(R.id.nav_profile_image);
+        navProfileText = navView.findViewById(R.id.nav_user_name);
 
         userRef.child(currentUID).addValueEventListener(new ValueEventListener() {
             @Override
