@@ -5,14 +5,19 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -29,10 +34,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageActivity;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -82,27 +89,39 @@ public class SetupActivity extends AppCompatActivity {
             intent.setAction(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
 
-            activityResultLauncher.launch(intent);
+            intent.putExtra("crop", "true");
+            intent.putExtra("aspectX", 0);
+            intent.putExtra("aspectY", 0);
+            intent.putExtra("outputX", 200);
+            intent.putExtra("outputY", 150);
+
+
+            launchSomeActivity.launch(intent);
+
 
 
         });
 
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    String image = snapshot.child("profileimage").getValue().toString();
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+//        userRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if(snapshot.exists()){
+//                    String image = snapshot.child("profileimage").getValue().toString();
+//                    Picasso.get().load(image).placeholder(R.drawable.ic_person).into(profileImage);
+//
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
 
     }
+
+
 
     private void AccountSetup() {
         String username=  edtUsername.getText().toString();
@@ -157,15 +176,89 @@ public class SetupActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+    ActivityResultLauncher<Intent> launchSomeActivity
+            = registerForActivityResult(
+            new ActivityResultContracts
+                    .StartActivityForResult(),
+            result -> {
+                if (result.getResultCode()
+                        == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    // do your operation from here....
+                    if (data != null
+                            && data.getData() != null) {
+                        Uri imageUri = data.getData();
+
+//                        CropImage.activity()
+//                                .setGuidelines(CropImageView.Guidelines.ON)
+//                                .setAspectRatio(1, 1)
+//                                .start(SetupActivity.this);
+//
+//
+//                        CropImage.ActivityResult cropResult = CropImage.getActivityResult(data);
+//                        Toast.makeText(SetupActivity.this, "in crop", Toast.LENGTH_SHORT).show();
+
+                        if(result.getResultCode() == Activity.RESULT_OK){
+
+                            Toast.makeText(SetupActivity.this, "in loader", Toast.LENGTH_SHORT).show();
+
+                            loadingBar.setTitle("Profile Image");
+                            loadingBar.setMessage("Please wait...");
+                            loadingBar.show();
+                            loadingBar.setCanceledOnTouchOutside(true);
+
+//                            Uri resultUri = cropResult.getUri();
+                            StorageReference filePath = userProfileImageRef.child(currentUID+".jpg");
+                            filePath.putFile(imageUri)
+                                    .continueWithTask(task -> {
+                                        if(!task.isSuccessful()){
+                                            throw task.getException();
+                                        }
+                                        return filePath.getDownloadUrl();
+                                    })
+                                    .addOnCompleteListener(task -> {
+                                        if(task.isSuccessful()){
+                                            Uri downloadUri = task.getResult();
+
+                                            userRef.child("profileimage").setValue(downloadUri)
+                                                    .addOnCompleteListener(tasc->{
+                                                        if(tasc.isSuccessful()){
+                                                            Intent selfIntent = new Intent(SetupActivity.this, SetupActivity.class);
+                                                            startActivity(selfIntent);
+
+                                                            loadingBar.dismiss();
+                                                            Toast.makeText(SetupActivity.this, "profile image stored to firebase db", Toast.LENGTH_SHORT).show();
+
+                                                        }else{
+                                                            loadingBar.dismiss();
+                                                            String message = tasc.getException().getMessage();
+                                                            Toast.makeText(SetupActivity.this, "Failure: "+message, Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+
+                                            Toast.makeText(SetupActivity.this, "profile image saved", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+
+                    }else{
+                        loadingBar.dismiss();
+
+                        Toast.makeText(SetupActivity.this, "Error: Image not compatible", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
 
     ActivityResultLauncher<Intent> activityResultLauncher =  registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if(result.getResultCode() == RESULT_OK){
+                    if(result.getResultCode() == Activity.RESULT_OK){
                         Intent data = result.getData();
 
+                        Toast.makeText(SetupActivity.this, "in activity for result", Toast.LENGTH_SHORT).show();
 
 
                         if(data != null && data.getData() !=null) {
@@ -179,10 +272,11 @@ public class SetupActivity extends AppCompatActivity {
 
 
                                 CropImage.ActivityResult cropResult = CropImage.getActivityResult(data);
+                            Toast.makeText(SetupActivity.this, "in crop", Toast.LENGTH_SHORT).show();
 
+                            if(result.getResultCode() == Activity.RESULT_OK && cropResult != null){
 
-                            if(result.getResultCode() == RESULT_OK && cropResult != null){
-
+                                Toast.makeText(SetupActivity.this, "in loader", Toast.LENGTH_SHORT).show();
 
                                 loadingBar.setTitle("Profile Image");
                                 loadingBar.setMessage("Please wait...");
