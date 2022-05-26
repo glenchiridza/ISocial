@@ -80,11 +80,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    String fullname = snapshot.child("fullname").getValue().toString();
-                    String image = snapshot.child("profileimage").getValue().toString();
+                    if(snapshot.hasChild("fullname")){
+                        String fullname = snapshot.child("fullname").getValue().toString();
+                        navProfileText.setText(fullname);
 
-                    navProfileText.setText(fullname);
-                    Picasso.get().load(image).placeholder(R.drawable.ic_person).into(navProfileImage);
+                    }
+                    if(snapshot.hasChild("profileimage")){
+                        String image = snapshot.child("profileimage").getValue().toString();
+                        Picasso.get().load(image).placeholder(R.drawable.ic_person).into(navProfileImage);
+
+                    }
                 }
             }
 
