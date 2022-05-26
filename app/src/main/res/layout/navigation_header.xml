@@ -7,7 +7,7 @@
     android:background="@drawable/header">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageView"
+        android:id="@+id/nav_profile_image"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginStart="8dp"
@@ -27,7 +27,7 @@
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/circleImageView"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+        app:layout_constraintStart_toStartOf="@+id/nav_profile_image"
+        app:layout_constraintTop_toBottomOf="@+id/nav_profile_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
