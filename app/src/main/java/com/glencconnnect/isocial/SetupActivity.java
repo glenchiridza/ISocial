@@ -8,12 +8,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -60,6 +63,7 @@ public class SetupActivity extends AppCompatActivity {
 
     private StorageReference userProfileImageRef;
 
+    private Uri imageUri = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,15 +89,14 @@ public class SetupActivity extends AppCompatActivity {
         });
 
         profileImage.setOnClickListener(view -> {
+
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
+            intent.putExtra("crop","true");
+            intent.putExtra("aspectY","1");
+            intent.putExtra("aspectX","1");
 
-            intent.putExtra("crop", "true");
-            intent.putExtra("aspectX", 0);
-            intent.putExtra("aspectY", 0);
-            intent.putExtra("outputX", 200);
-            intent.putExtra("outputY", 150);
 
 
             launchSomeActivity.launch(intent);
@@ -189,18 +192,10 @@ public class SetupActivity extends AppCompatActivity {
                     // do your operation from here....
                     if (data != null
                             && data.getData() != null) {
-                        Uri imageUri = data.getData();
+                        imageUri = data.getData();
 
-//                        CropImage.activity()
-//                                .setGuidelines(CropImageView.Guidelines.ON)
-//                                .setAspectRatio(1, 1)
-//                                .start(SetupActivity.this);
-//
-//
-//                        CropImage.ActivityResult cropResult = CropImage.getActivityResult(data);
-//                        Toast.makeText(SetupActivity.this, "in crop", Toast.LENGTH_SHORT).show();
+                        profileImage.setImageURI(imageUri);
 
-                        if(result.getResultCode() == Activity.RESULT_OK){
 
                             Toast.makeText(SetupActivity.this, "in loader", Toast.LENGTH_SHORT).show();
 
@@ -216,11 +211,15 @@ public class SetupActivity extends AppCompatActivity {
                                         if(!task.isSuccessful()){
                                             throw task.getException();
                                         }
+
                                         return filePath.getDownloadUrl();
+
                                     })
                                     .addOnCompleteListener(task -> {
                                         if(task.isSuccessful()){
                                             Uri downloadUri = task.getResult();
+
+                                            Toast.makeText(SetupActivity.this, "in result", Toast.LENGTH_SHORT).show();
 
                                             userRef.child("profileimage").setValue(downloadUri)
                                                     .addOnCompleteListener(tasc->{
@@ -241,7 +240,7 @@ public class SetupActivity extends AppCompatActivity {
                                             Toast.makeText(SetupActivity.this, "profile image saved", Toast.LENGTH_SHORT).show();
                                         }
                                     });
-                        }
+
 
                     }else{
                         loadingBar.dismiss();
