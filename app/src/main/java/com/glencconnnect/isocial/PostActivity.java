@@ -7,12 +7,20 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import java.util.Objects;
 
 public class PostActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
+
+    private ImageButton postImageSelector;
+    private EditText postText;
+    private Button btnPublishPost;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +32,10 @@ public class PostActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+
+        postImageSelector = findViewById(R.id.post_image);
+        postText = findViewById(R.id.post_text);
+        btnPublishPost = findViewById(R.id.post_publish);
 
     }
 
