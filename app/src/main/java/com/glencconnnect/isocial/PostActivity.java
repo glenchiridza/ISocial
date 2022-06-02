@@ -12,12 +12,23 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
 
 public class PostActivity extends AppCompatActivity {
@@ -29,11 +40,17 @@ public class PostActivity extends AppCompatActivity {
     private Button btnPublishPost;
 
     private Uri imageUri = null;
+    private String postDescription;
+    private StorageReference postImageRef;
+
+    private String saveCurrentDate, saveCurrentTime, postRandomName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+
+        postImageRef = FirebaseStorage.getInstance().getReference();
 
         toolbar = findViewById(R.id.post_page_toolbar);
         setSupportActionBar(toolbar);
@@ -51,8 +68,50 @@ public class PostActivity extends AppCompatActivity {
         });
 
         btnPublishPost.setOnClickListener(view->{
-
+            validatePost();
         });
+    }
+
+    private void validatePost() {
+        postDescription = postText.getText().toString();
+        if(imageUri == null){
+            Toast.makeText(this, "Please Select Post Image", Toast.LENGTH_SHORT).show();
+        }
+        else if(TextUtils.isEmpty(postDescription)){
+            postText.setError("Post Description Required");
+            postText.requestFocus();
+        }else{
+            storeInFirebaseStorage();
+        }
+    }
+
+    private void storeInFirebaseStorage() {
+
+        Calendar callDate = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault());
+        saveCurrentDate = currentDate.format(callDate.getTime());
+
+        Calendar callTime = Calendar.getInstance();
+        SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        saveCurrentTime = currentTime.format(callTime.getTime());
+
+        postRandomName = saveCurrentDate + saveCurrentTime;
+
+        String postImageName = imageUri.getLastPathSegment() + postRandomName + ".jpg";
+        StorageReference filePath = postImageRef.child("PostImages").child(postImageName);
+        filePath.putFile(imageUri)
+                .continueWithTask( task -> {
+
+                    if(!task.isSuccessful()){
+                        throw Objects.requireNonNull(task.getException());
+                    }
+
+                    return filePath.getDownloadUrl();
+
+                })
+                .addOnCompleteListener(task->{
+
+                });
     }
 
     private void openGallery() {
