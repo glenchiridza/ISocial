@@ -26,4 +26,5 @@
     <string name="add_post">Add Post</string>
     <string name="your_post_message">your post message</string>
     <string name="publish_post">Publish Post</string>
+    <string name="select_image">Click to Select Post Image</string>
 </resources>
