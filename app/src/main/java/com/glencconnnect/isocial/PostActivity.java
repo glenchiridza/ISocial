@@ -111,6 +111,12 @@ public class PostActivity extends AppCompatActivity {
                 })
                 .addOnCompleteListener(task->{
 
+                    if(task.isSuccessful()){
+                        Toast.makeText(PostActivity.this, "Image Upload Successful", Toast.LENGTH_SHORT).show();
+                    }else{
+                        String message = task.getException().getMessage();
+                        Toast.makeText(PostActivity.this, "Error: "+message, Toast.LENGTH_SHORT).show();
+                    }
                 });
     }
 
