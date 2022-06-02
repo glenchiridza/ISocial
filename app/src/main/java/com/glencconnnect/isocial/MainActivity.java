@@ -109,9 +109,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnAddPost.setOnClickListener(view->{
-
+            sendUserToPostActivity();
         });
 
+    }
+
+    private void sendUserToPostActivity() {
+        Intent intent  = new Intent(this,PostActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override
@@ -170,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         int idx = item.getItemId();
 
             if (idx == R.id.nav_post) {
-                Toast.makeText(this, "post clicked", Toast.LENGTH_SHORT).show();
+                sendUserToPostActivity();
             }
             else if (idx == R.id.nav_profile) {
                 Toast.makeText(this, "profile clicked", Toast.LENGTH_SHORT).show();
