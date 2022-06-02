@@ -6,4 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".PostActivity">
 
+    <include
+        android:id="@+id/post_page_toolbar"
+        layout="@layout/app_bar"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

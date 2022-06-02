@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void sendUserToPostActivity() {
         Intent intent  = new Intent(this,PostActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 

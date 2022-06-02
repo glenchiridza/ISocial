@@ -23,4 +23,5 @@
     <string name="country">Country</string>
     <string name="fullname">Fullname</string>
     <string name="username">Username</string>
+    <string name="add_post">Add Post</string>
 </resources>

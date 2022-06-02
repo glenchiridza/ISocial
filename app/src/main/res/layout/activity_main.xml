@@ -36,7 +36,9 @@
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_new_post"
             android:layout_centerVertical="true"
+            android:backgroundTint="@color/white"
             android:layout_marginEnd="10dp"
+            android:layout_alignParentTop="true"
             />
     </RelativeLayout>
 
