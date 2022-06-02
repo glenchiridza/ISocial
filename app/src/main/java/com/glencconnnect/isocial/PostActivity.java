@@ -82,7 +82,7 @@ public class PostActivity extends AppCompatActivity {
         if(imageUri == null){
             Toast.makeText(this, "Please Select Post Image", Toast.LENGTH_SHORT).show();
         }
-        else if(TextUtils.isEmpty(postDescription)){
+        if(TextUtils.isEmpty(postDescription)){
             postText.setError("Post Description Required");
             postText.requestFocus();
         }else{
@@ -94,7 +94,7 @@ public class PostActivity extends AppCompatActivity {
 
         loadingBar.setTitle("Publish Post");
         loadingBar.setMessage("Please wait...");
-        loadingBar.setCancelable(true);
+        loadingBar.setCanceledOnTouchOutside(true);
         loadingBar.show();
 
 
