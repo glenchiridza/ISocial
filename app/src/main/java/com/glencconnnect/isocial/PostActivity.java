@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,10 +46,14 @@ public class PostActivity extends AppCompatActivity {
 
     private String saveCurrentDate, saveCurrentTime, postRandomName;
 
+    private ProgressDialog loadingBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+
+        loadingBar = new ProgressDialog(this);
 
         postImageRef = FirebaseStorage.getInstance().getReference();
 
@@ -87,6 +92,12 @@ public class PostActivity extends AppCompatActivity {
 
     private void storeInFirebaseStorage() {
 
+        loadingBar.setTitle("Publish Post");
+        loadingBar.setMessage("Please wait...");
+        loadingBar.setCancelable(true);
+        loadingBar.show();
+
+
         Calendar callDate = Calendar.getInstance();
         SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM-yyyy", Locale.getDefault());
         saveCurrentDate = currentDate.format(callDate.getTime());
@@ -112,8 +123,10 @@ public class PostActivity extends AppCompatActivity {
                 .addOnCompleteListener(task->{
 
                     if(task.isSuccessful()){
+                        loadingBar.dismiss();
                         Toast.makeText(PostActivity.this, "Image Upload Successful", Toast.LENGTH_SHORT).show();
                     }else{
+                        loadingBar.dismiss();
                         String message = task.getException().getMessage();
                         Toast.makeText(PostActivity.this, "Error: "+message, Toast.LENGTH_SHORT).show();
                     }
