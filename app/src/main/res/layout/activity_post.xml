@@ -40,15 +40,28 @@
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName"
+                android:id="@+id/post_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"
+                android:background="@drawable/inputs"
                 android:layout_marginTop="16dp"
                 android:hint="@string/your_post_message"
                 app:layout_constraintTop_toBottomOf="@+id/post_image"
                 app:layout_constraintStart_toStartOf="@+id/post_image"
                 app:layout_constraintEnd_toEndOf="@+id/post_image"/>
+
+            <Button
+                android:id="@+id/post_publish"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/publish_post"
+                app:layout_constraintTop_toBottomOf="@+id/post_text"
+                app:layout_constraintStart_toStartOf="@+id/post_text"
+                app:layout_constraintEnd_toEndOf="@+id/post_text"
+                android:background="@drawable/button"/>
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
