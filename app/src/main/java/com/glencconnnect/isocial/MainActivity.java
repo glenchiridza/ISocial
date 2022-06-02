@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private CircleImageView navProfileImage;
     private TextView navProfileText;
+    private ImageButton btnAddPost;
 
     private Toolbar mToolbar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Home");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        btnAddPost = findViewById(R.id.add_new_post);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,drawerLayout,
@@ -103,6 +107,11 @@ public class MainActivity extends AppCompatActivity {
             UserMenuSelector(item);
             return false;
         });
+
+        btnAddPost.setOnClickListener(view->{
+
+        });
+
     }
 
     @Override
