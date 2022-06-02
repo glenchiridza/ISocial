@@ -111,6 +111,7 @@ public class SetupActivity extends AppCompatActivity {
                 if(snapshot.exists()){
                     if(snapshot.hasChild("profileimage")) {
                         String image = snapshot.child("profileimage").getValue().toString();
+
                         Picasso.get().load(image).placeholder(R.drawable.ic_person).into(profileImage);
                     }
 
@@ -194,8 +195,6 @@ public class SetupActivity extends AppCompatActivity {
                             && data.getData() != null) {
                         imageUri = data.getData();
 
-                        profileImage.setImageURI(imageUri);
-
 
                             Toast.makeText(SetupActivity.this, "in loader", Toast.LENGTH_SHORT).show();
 
@@ -221,7 +220,7 @@ public class SetupActivity extends AppCompatActivity {
 
                                             Toast.makeText(SetupActivity.this, "in result", Toast.LENGTH_SHORT).show();
 
-                                            userRef.child("profileimage").setValue(downloadUri)
+                                            userRef.child("profileimage").setValue(downloadUri.toString())
                                                     .addOnCompleteListener(tasc->{
                                                         if(tasc.isSuccessful()){
                                                             Intent selfIntent = new Intent(SetupActivity.this, SetupActivity.class);
