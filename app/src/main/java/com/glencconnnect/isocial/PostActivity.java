@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -58,6 +60,7 @@ public class PostActivity extends AppCompatActivity {
 
     private ProgressDialog loadingBar;
 
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +82,8 @@ public class PostActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+
+        coordinatorLayout = findViewById(R.id.coordinator_post);
 
         postImageSelector = findViewById(R.id.post_image);
         postText = findViewById(R.id.post_text);
@@ -109,7 +114,7 @@ public class PostActivity extends AppCompatActivity {
     private void storeImageInFirebaseStorage() {
 
         loadingBar.setTitle("Publish Post");
-        loadingBar.setMessage("Please wait...");
+        loadingBar.setMessage("Please wait, we're publishing your post...");
         loadingBar.setCanceledOnTouchOutside(true);
         loadingBar.show();
 
@@ -172,7 +177,17 @@ public class PostActivity extends AppCompatActivity {
                     postMap.put("profileimage",userProfileImage);
                     postMap.put("fullname",userFullName);
 
-                    postRef
+
+                    postRef.child(currentUID+postRandomName).updateChildren(postMap)
+                            .addOnCompleteListener(task->{
+                               if(task.isSuccessful()){
+                                   sendUserToMainActivity();
+                                   Snackbar.make(coordinatorLayout,"Post published successfully",Snackbar.LENGTH_SHORT).show();
+                               }else{
+
+                                   Snackbar.make(coordinatorLayout,"Error while publishing",Snackbar.LENGTH_SHORT).show();
+                               }
+                            });
 
                 }
             }
@@ -181,7 +196,7 @@ public class PostActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        })
+        });
     }
 
     private void openGallery() {
