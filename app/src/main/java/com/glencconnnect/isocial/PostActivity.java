@@ -22,6 +22,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -43,10 +49,14 @@ public class PostActivity extends AppCompatActivity {
     private Uri imageUri = null;
     private String postDescription;
     private StorageReference postImageRef;
+    private DatabaseReference userRef;
+    private FirebaseAuth mAuth;
+    private String currentUID;
 
-    private String saveCurrentDate, saveCurrentTime, postRandomName;
+    private String saveCurrentDate, saveCurrentTime, postRandomName, downloadUrl;
 
     private ProgressDialog loadingBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +65,10 @@ public class PostActivity extends AppCompatActivity {
 
         loadingBar = new ProgressDialog(this);
 
+        mAuth = FirebaseAuth.getInstance();
+        currentUID = mAuth.getCurrentUser().getUid();
         postImageRef = FirebaseStorage.getInstance().getReference();
+        userRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         toolbar = findViewById(R.id.post_page_toolbar);
         setSupportActionBar(toolbar);
@@ -86,11 +99,11 @@ public class PostActivity extends AppCompatActivity {
             postText.setError("Post Description Required");
             postText.requestFocus();
         }else{
-            storeInFirebaseStorage();
+            storeImageInFirebaseStorage();
         }
     }
 
-    private void storeInFirebaseStorage() {
+    private void storeImageInFirebaseStorage() {
 
         loadingBar.setTitle("Publish Post");
         loadingBar.setMessage("Please wait...");
@@ -124,13 +137,38 @@ public class PostActivity extends AppCompatActivity {
 
                     if(task.isSuccessful()){
                         loadingBar.dismiss();
+                        downloadUrl = task.getResult().toString();
+                        
                         Toast.makeText(PostActivity.this, "Image Upload Successful", Toast.LENGTH_SHORT).show();
+
+                        savePostInformationToDB();
                     }else{
                         loadingBar.dismiss();
                         String message = task.getException().getMessage();
                         Toast.makeText(PostActivity.this, "Error: "+message, Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void savePostInformationToDB() {
+
+        userRef.child(currentUID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    String userFullName  = snapshot.child("fullname").getValue().toString();
+                    String userProfileImage = snapshot.child("profileimage").getValue().toString();
+
+                    //adding post information
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        })
     }
 
     private void openGallery() {
