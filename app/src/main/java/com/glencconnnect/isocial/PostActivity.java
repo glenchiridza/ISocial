@@ -35,6 +35,7 @@ import com.google.firebase.storage.UploadTask;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -49,7 +50,7 @@ public class PostActivity extends AppCompatActivity {
     private Uri imageUri = null;
     private String postDescription;
     private StorageReference postImageRef;
-    private DatabaseReference userRef;
+    private DatabaseReference userRef, postRef;
     private FirebaseAuth mAuth;
     private String currentUID;
 
@@ -67,8 +68,10 @@ public class PostActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         currentUID = mAuth.getCurrentUser().getUid();
+
         postImageRef = FirebaseStorage.getInstance().getReference();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        postRef = FirebaseDatabase.getInstance().getReference().child("Posts");
 
         toolbar = findViewById(R.id.post_page_toolbar);
         setSupportActionBar(toolbar);
@@ -160,6 +163,16 @@ public class PostActivity extends AppCompatActivity {
                     String userProfileImage = snapshot.child("profileimage").getValue().toString();
 
                     //adding post information
+                    HashMap<String,Object> postMap = new HashMap<>();
+                    postMap.put("uid",currentUID);
+                    postMap.put("date",saveCurrentDate);
+                    postMap.put("time",saveCurrentDate);
+                    postMap.put("description",postDescription);
+                    postMap.put("postimage",downloadUrl);
+                    postMap.put("profileimage",userProfileImage);
+                    postMap.put("fullname",userFullName);
+
+                    postRef
 
                 }
             }
