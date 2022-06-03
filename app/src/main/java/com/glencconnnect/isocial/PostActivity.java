@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -60,7 +61,7 @@ public class PostActivity extends AppCompatActivity {
 
     private ProgressDialog loadingBar;
 
-    private CoordinatorLayout coordinatorLayout;
+    private View coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +84,6 @@ public class PostActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-        coordinatorLayout = findViewById(R.id.coordinator_post);
 
         postImageSelector = findViewById(R.id.post_image);
         postText = findViewById(R.id.post_text);
@@ -94,7 +94,9 @@ public class PostActivity extends AppCompatActivity {
         });
 
         btnPublishPost.setOnClickListener(view->{
+            coordinatorLayout = view;
             validatePost();
+
         });
     }
 
@@ -144,12 +146,13 @@ public class PostActivity extends AppCompatActivity {
                 .addOnCompleteListener(task->{
 
                     if(task.isSuccessful()){
-                        loadingBar.dismiss();
                         downloadUrl = task.getResult().toString();
                         
                         Toast.makeText(PostActivity.this, "Image Upload Successful", Toast.LENGTH_SHORT).show();
 
                         savePostInformationToDB();
+
+                        loadingBar.dismiss();
                     }else{
                         loadingBar.dismiss();
                         String message = task.getException().getMessage();
@@ -182,6 +185,11 @@ public class PostActivity extends AppCompatActivity {
                             .addOnCompleteListener(task->{
                                if(task.isSuccessful()){
                                    sendUserToMainActivity();
+
+                                   //remove the values inserted by user
+                                   imageUri = null;
+                                   postText.setText("");
+
                                    Snackbar.make(coordinatorLayout,"Post published successfully",Snackbar.LENGTH_SHORT).show();
                                }else{
 
@@ -203,9 +211,9 @@ public class PostActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        intent.putExtra("crop","true");
-        intent.putExtra("aspectY","1");
-        intent.putExtra("aspectX","1");
+//        intent.putExtra("crop","true");
+//        intent.putExtra("aspectY","1");
+//        intent.putExtra("aspectX","1");
         launchActivityIntent.launch(intent);
 
     }
