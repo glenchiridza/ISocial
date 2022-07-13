@@ -121,6 +121,12 @@ public class MainActivity extends AppCompatActivity {
             sendUserToPostActivity();
         });
 
+        displayAllUserPosts();
+
+    }
+
+    private void displayAllUserPosts() {
+
     }
 
     private void sendUserToPostActivity() {
